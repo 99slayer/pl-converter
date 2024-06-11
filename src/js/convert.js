@@ -60,10 +60,10 @@ function convertWord(word) {
 		(cap ? first.toUpperCase() : first) +
 		w.slice(chars.length + 1) +
 		chars +
-		'ay' +
+		(chars ? 'ay' : 'yay') +
 		punc
 	);
-}
+};
 
 function pCheck(w) {
 	let p = '';

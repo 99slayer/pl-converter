@@ -181,8 +181,15 @@ footer .footer-content {
 	min-width: 505px;
 	height: 54px;
 	padding-left: 40px;
+	display: flex;
+	align-items: center;
 	background-color: var(--color-1);
 	background: linear-gradient(120deg, var(--color-2) 7%, var(--color-1) 7% 100%);
+}
+
+.icon-wrapper {
+	width: 40px;
+	height: 40px;
 }
 
 footer .spacer {

@@ -1,7 +1,9 @@
-const punctuation = ['.', '!', '?', ';', ','];
-const symbols = ['', ' ', '\t', '\n', '\'', '"', ':', '-', '_', '[', ']', '(', ')', '{', '}'];
+const vowels = ['A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'];
 const consonants = [
 	'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z', 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'
+];
+const nonalphabeticChars = [
+	'', ' ', '\t', '\n', '\'', '"', ':', '/', '\\', '_', '-', '+', '=', '|', '<', '>', '.', '!', '?', ';', '~', ',', '@', '#', '$', '%', '^', '&', '*', '[', ']', '(', ')', '{', '}'
 ];
 
 function convert(text) {
@@ -9,22 +11,23 @@ function convert(text) {
 
 	if (!trimmed) return;
 
-	const arr = trimmed.split(/([\s'":\-\_\[\]\(\)\{\}])/);
+	const arr = trimmed.split(/([\s'":/\\\_\-+=|<>.!?;~,@#$%^&*\[\]\(\)\{\}])/);
 	let result = '';
 
 	for (const word of arr) {
 		result += convertWord(word);
 	}
 
-	return result
+	return result;
 }
 
 function convertWord(word) {
-	if (symbols.includes(word)) return word;
+	if (nonalphabeticChars.includes(word)) return word;
+	if (vowels.includes(word)) return word + 'yay';
+	if (consonants.includes(word)) return word;
 
-	let [punc, w] = pCheck(word);
-	const cap = capCheck(w);
-	w = w.toLowerCase();
+	const cap = capCheck(word);
+	const w = word.toLowerCase();
 	const cluster = w.slice(0, 3);
 	let yIndex;
 	let count = 0;
@@ -60,26 +63,9 @@ function convertWord(word) {
 		(cap ? first.toUpperCase() : first) +
 		w.slice(chars.length + 1) +
 		chars +
-		(chars ? 'ay' : 'yay') +
-		punc
+		(chars ? 'ay' : 'yay')
 	);
 };
-
-function pCheck(w) {
-	let p = '';
-	let pIndex;
-
-	for (const char of w.split('')) {
-		const check = punctuation.includes(char);
-
-		if (check) {
-			p += char;
-			if (pIndex === undefined) pIndex = w.indexOf(char);
-		}
-	}
-
-	return [p, w.slice(0, pIndex)];
-}
 
 function capCheck(w) {
 	const char = w.slice(0, 1);
